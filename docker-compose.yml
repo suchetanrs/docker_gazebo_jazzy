@@ -13,6 +13,7 @@ services:
       - /etc/localtime:/etc/localtime:rw
       #ros-workspaces
       - ~/ros_jazzy_ws:/root/ros_jazzy_ws:rw
+      - ~/nav_test_ws:/root/rosbags:rw
       #- ./gazebo-simulator:/root/ros_jazzy_ws/src/gazebo-simulator:rw
       - ~/.ros/:/root/.ros/:rw
     privileged: true

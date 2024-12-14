@@ -37,19 +37,26 @@ def generate_launch_description():
     pkg_project_gazebo = get_package_share_directory("rover_gz_bringup")
     pkg_project_worlds = get_package_share_directory("rover_gz_worlds")
 
+
     robot_ns = DeclareLaunchArgument(
-        "robot_ns",
+        name="robot_ns",
         default_value="",
         description="Robot namespace",
     )
 
+
+    sim_world = DeclareLaunchArgument(
+        name="sim_world",
+        default_value=os.path.join(pkg_project_worlds, "worlds", "marsyard2022.sdf"),
+        description="Path to the Gazebo world file",
+    )
 
     # Setup to launch the simulator and Gazebo world
     gz_sim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(pkg_ros_gz_sim, "launch", "gz_sim.launch.py")
         ),
-        launch_arguments={"gz_args": "marsyard2020.sdf -r"}.items(),
+        launch_arguments={"gz_args": LaunchConfiguration("sim_world")}.items(),
     )
     # -r autoplay when gazebo is launched
     # -s run without the GUI
@@ -77,6 +84,7 @@ def generate_launch_description():
     return LaunchDescription(
         [
             robot_ns,
+            sim_world,
             gz_sim,
             topic_bridge,
         ]

@@ -377,7 +377,7 @@
             <ode>
               <mu>1</mu>
               <mu2>1</mu2>
-              <slip1>0.035</slip1>
+              <slip1>0.0035</slip1>
               <slip2>0</slip2>
               <fdir1>0 0 1</fdir1>
             </ode>
@@ -398,7 +398,7 @@
             <ode>
               <mu>1</mu>
               <mu2>1</mu2>
-              <slip1>0.035</slip1>
+              <slip1>0.0035</slip1>
               <slip2>0</slip2>
               <fdir1>0 0 1</fdir1>
             </ode>
@@ -419,7 +419,7 @@
             <ode>
               <mu>1</mu>
               <mu2>1</mu2>
-              <slip1>0.035</slip1>
+              <slip1>0.0035</slip1>
               <slip2>0</slip2>
               <fdir1>0 0 1</fdir1>
             </ode>
@@ -440,7 +440,7 @@
             <ode>
               <mu>1</mu>
               <mu2>1</mu2>
-              <slip1>0.035</slip1>
+              <slip1>0.0035</slip1>
               <slip2>0</slip2>
               <fdir1>0 0 1</fdir1>
             </ode>
@@ -465,7 +465,7 @@
                   <format>R8G8B8</format>
               </image>
               <clip>
-                  <near>0.2</near>
+                  <near>0.1</near>
                   <far>300</far>
               </clip>
               <noise>
@@ -567,7 +567,7 @@
         <origin xyz="0.0 0.0 1.0"/>
       </joint>
     </xacro:if>
-  
+
   </xacro:macro>
 
 </robot>

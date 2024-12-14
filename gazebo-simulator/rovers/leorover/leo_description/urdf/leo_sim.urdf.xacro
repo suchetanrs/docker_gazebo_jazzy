@@ -7,9 +7,21 @@
   <xacro:arg name="mecanum_wheels" default="false"/>
 
   <xacro:include filename="$(find leo_description)/urdf/macros.xacro"/>
+  <xacro:include filename="$(find ouster_description)/urdf/OS1-64.urdf.xacro"/>
+  <xacro:include filename="$(find zed2_description)/urdf/zed2.urdf.xacro"/>
+
+  <xacro:OS1-64 name="os1_sensor" hz="10" samples="220">  
+    <origin xyz="0 0 0.25" rpy="0 0 0" />  
+  </xacro:OS1-64>
+  
+  <xacro:Zed2 name="zed2" >  
+    <origin xyz="0.048 0 0.101" rpy="0 0.415911961 0"/>  
+  </xacro:Zed2>
 
   <xacro:leo_sim robot_ns="$(arg robot_ns)"
                  fixed="$(arg fixed)"
                  mecanum_wheels="$(arg mecanum_wheels)"/>
+
+
 
 </robot>

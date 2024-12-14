@@ -23,12 +23,13 @@ Reference:
     <xacro:scout_wheel_transmission wheel_prefix="rear_right" />
 
     <!-- Controller configurations -->
-    <gazebo>
+   <!-- <gazebo>
         <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
             <robotNamespace>$(arg robot_namespace)</robotNamespace>
             <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
         </plugin>
     </gazebo>
+    -->
 
     <!-- kp spring constant, kd damping constant -->
     <gazebo reference="front_left_wheel_link">
@@ -58,6 +59,7 @@ Reference:
         <fdir1>1 0 0</fdir1>
 
     </gazebo>
+    
     <gazebo reference="rear_right_wheel_link">
         <mu1>0.9</mu1>
         <mu2>0.7</mu2>
@@ -68,27 +70,23 @@ Reference:
         <!--maxContacts value="64"/-->
     </gazebo>
     
-    <!-- <gazebo>
-        <plugin name="skid_steer_drive_controller" filename="libgazebo_ros_skid_steer_drive.so">
-            <updateRate>100.0</updateRate>
-            <robotNamespace></robotNamespace>
-            <leftFrontJoint>front_left_wheel</leftFrontJoint>
-            <rightFrontJoint>front_right_wheel</rightFrontJoint>
-            <leftRearJoint>rear_left_wheel</leftRearJoint>
-            <rightRearJoint>rear_right_wheel</rightRearJoint>
-            <wheelSeparation>4</wheelSeparation>
-            <wheelDiameter>0.32918</wheelDiameter>
-            <robotBaseFrame>base_link</robotBaseFrame>
-            <torque>1000</torque>
-            <commandTopic>cmd_vel</commandTopic>
-            <broadcastTF>true</broadcastTF>
-            <odometryTopic>odom</odometryTopic>
-            <odometryFrame>odom</odometryFrame>
-            <covariance_x>0.000100</covariance_x>
-            <covariance_y>0.000100</covariance_y>
-            <covariance_yaw>0.010000</covariance_yaw>
+    <!--<gazebo>
+        <plugin name="gz::sim::systems::DiffDrive" filename="gz-sim-diff-drive-system">          
+            <left_joint>front_left_wheel</left_joint>
+            <left_joint>rear_left_wheel</left_joint>
+            <right_joint>front_right_wheel</right_joint>            
+            <right_joint>rear_right_wheel</right_joint>
+            <wheel_separation>4</wheel_separation>
+            <wheel_radius>0.32918</wheel_radius>
+            <odom_publish_frequency>20</odom_publish_frequency>
         </plugin>
     </gazebo> -->
+
+    <gazebo>
+        <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
+            <parameters>~/ros_jazzy_ws/src/gazebo-simulator/rovers/scout_agilex/scout_description/scout_joint.yaml</parameters>
+        </plugin>
+    </gazebo>
 
     <!-- <gazebo>
         <plugin name="object_controller" filename="libgazebo_ros_planar_move.so">

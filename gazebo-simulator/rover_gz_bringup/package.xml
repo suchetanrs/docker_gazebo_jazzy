@@ -23,6 +23,8 @@
   
   <exec_depend>leo_description</exec_depend>
   <exec_depend>scout_description</exec_depend>
+  <exec_depend>ouster_description</exec_depend>
+  <exec_depend>zed2_description</exec_depend>
 
   <exec_depend>rover_gz_plugins</exec_depend>
   <exec_depend>rover_gz_worlds</exec_depend>

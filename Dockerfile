@@ -59,6 +59,8 @@ RUN     cd ceres-solver-2.2.0 \
 RUN apt-get update && apt-get install xterm -y
 RUn apt-get install -y nano ros-jazzy-rmw-cyclonedds-cpp
 
+RUN apt-get install ros-jazzy-grid-map -y
+
 # Use root user & define working environment
 USER root
 RUN mkdir -p /root/ros_jazzy_ws

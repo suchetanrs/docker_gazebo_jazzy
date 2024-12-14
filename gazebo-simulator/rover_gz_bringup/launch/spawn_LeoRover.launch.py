@@ -26,11 +26,14 @@ from launch import LaunchContext, LaunchDescription
 from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
+from launch.actions import IncludeLaunchDescription
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 import xacro
 
 
 def spawn_robot(context: LaunchContext, namespace: LaunchConfiguration):
     pkg_project_description = get_package_share_directory("leo_description")
+    pkg_project_rviz = get_package_share_directory("leo_viz")
     robot_ns = context.perform_substitution(namespace)
 
     robot_desc = xacro.process(
@@ -84,13 +87,16 @@ def spawn_robot(context: LaunchContext, namespace: LaunchConfiguration):
         executable="parameter_bridge",
         name=node_name_prefix + "parameter_bridge",
         arguments=[
-            robot_ns + "/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist",
-            robot_ns + "/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry",
-            robot_ns + "/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V",
-            robot_ns + "/imu/data_raw@sensor_msgs/msg/Imu[gz.msgs.IMU",
-            robot_ns
-            + "/camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo",
-            robot_ns + "/joint_states@sensor_msgs/msg/JointState[gz.msgs.Model",
+            robot_ns + "cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist",
+            robot_ns + "odom@nav_msgs/msg/Odometry[gz.msgs.Odometry",
+            robot_ns + "tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V",
+            robot_ns + "imu/data_raw@sensor_msgs/msg/Imu[gz.msgs.IMU",
+            robot_ns + "zed2/imu/data@sensor_msgs/msg/Imu[gz.msgs.IMU",            
+            robot_ns + "zed2/depth/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked",  
+            robot_ns + "camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo",
+            robot_ns + "joint_states@sensor_msgs/msg/JointState[gz.msgs.Model",
+            robot_ns + "os1_sensor/imu@sensor_msgs/msg/Imu[gz.msgs.IMU",
+            robot_ns + "os1_sensor/points/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked"              
         ],
         parameters=[
             {
@@ -105,14 +111,41 @@ def spawn_robot(context: LaunchContext, namespace: LaunchConfiguration):
         package="ros_gz_image",
         executable="image_bridge",
         name=node_name_prefix + "image_bridge",
-        arguments=[robot_ns + "/camera/image_raw"],
+        arguments=[
+            robot_ns + "/camera/image_raw",
+            robot_ns + "/zed2/left/image_raw_color",
+            robot_ns + "/zed2/left/image_rect_color",
+            robot_ns + "/zed2/right/image_raw_color",
+            robot_ns + "/zed2/right/image_rect_color",
+            robot_ns + "/zed2/depth",
+        ],
         output="screen",
     )
+    
+    
+    key_teleop_cmd = Node(
+        package="teleop_twist_keyboard",
+        executable="teleop_twist_keyboard",
+        namespace=robot_ns,
+        parameters=[{'speed': '0.4'}],
+        prefix=["xterm -e"],
+        remappings=[('cmd_vel', 'cmd_vel')],
+    )
+    
+    
+    rviz = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(pkg_project_rviz, "launch", "rviz.launch.py")
+        ),
+    )
+
     return [
         robot_state_publisher,
         leo_rover,
         topic_bridge,
         image_bridge,
+        key_teleop_cmd,
+        rviz
     ]
 
 
